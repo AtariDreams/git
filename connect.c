@@ -546,7 +546,7 @@ struct ref **get_remote_refs(int fd_out, struct packet_reader *reader,
 
 const char *parse_feature_value(const char *feature_list, const char *feature, int *lenp, int *offset)
 {
-	int len;
+	size_t len;
 
 	if (!feature_list)
 		return NULL;

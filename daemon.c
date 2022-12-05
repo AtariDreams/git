@@ -284,7 +284,7 @@ static const char *path_ok(const char *directory, struct hostinfo *hi)
 		 * Do not say /pub/.
 		 */
 		for ( pp = ok_paths ; *pp ; pp++ ) {
-			int len = strlen(*pp);
+			size_t len = strlen(*pp);
 			if (len <= pathlen &&
 			    !memcmp(*pp, path, len) &&
 			    (path[len] == '\0' ||
