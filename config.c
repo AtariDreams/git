@@ -3594,7 +3594,7 @@ static int git_config_copy_or_rename_section_in_file(const char *config_filename
 
 	while (fgets(buf, sizeof(buf), config_file)) {
 		unsigned i;
-		int length;
+		size_t length;
 		int is_section = 0;
 		char *output = buf;
 		for (i = 0; buf[i] && isspace(buf[i]); i++)

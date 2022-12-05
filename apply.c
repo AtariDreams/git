@@ -414,7 +414,7 @@ static int read_patch_file(struct strbuf *sb, int fd)
 static unsigned long linelen(const char *buffer, unsigned long size)
 {
 	unsigned long len = 0;
-	while (size--) {
+	for (; size; size--){
 		len++;
 		if (*buffer++ == '\n')
 			break;
