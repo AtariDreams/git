@@ -148,6 +148,10 @@ static struct git_istream *attach_stream_filter(struct git_istream *st,
 						struct stream_filter *filter)
 {
 	struct git_istream *ifs = xmalloc(sizeof(*ifs));
+
+	if (!ifs)
+		return NULL;
+
 	struct filtered_istream *fs = &(ifs->u.filtered);
 
 	ifs->close = close_istream_filtered;
