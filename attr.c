@@ -712,7 +712,7 @@ static struct attr_stack *read_attr_from_file(const char *path, unsigned flags)
 	else
 		fd = open(path, O_RDONLY);
 
-	if (fd < 0) {
+	if (fd == -1) {
 		warn_on_fopen_errors(path);
 		return NULL;
 	}

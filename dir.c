@@ -1066,8 +1066,8 @@ static int add_patterns(const char *fname, const char *base, int baselen,
 	else
 		fd = open(fname, O_RDONLY);
 
-	if (fd < 0 || fstat(fd, &st) < 0) {
-		if (fd < 0)
+	if (fd == -1 || fstat(fd, &st) == - 1) {
+		if (fd == -1)
 			warn_on_fopen_errors(fname);
 		else
 			close(fd);

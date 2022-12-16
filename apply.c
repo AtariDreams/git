@@ -4379,7 +4379,7 @@ static int try_create_file(struct apply_state *state, const char *path,
 		return !!symlink(buf, path);
 
 	fd = open(path, O_CREAT | O_EXCL | O_WRONLY, (mode & 0100) ? 0777 : 0666);
-	if (fd < 0)
+	if (fd == -1)
 		return 1;
 
 	if (convert_to_working_tree(state->repo->index, path, buf, size, &nbuf, NULL)) {
@@ -4924,7 +4924,7 @@ int apply_all_patches(struct apply_state *state,
 			arg = to_free = prefix_filename(state->prefix, arg);
 
 		fd = open(arg, O_RDONLY);
-		if (fd < 0) {
+		if (fd == -1) {
 			error(_("can't open patch '%s': %s"), arg, strerror(errno));
 			res = -128;
 			free(to_free);

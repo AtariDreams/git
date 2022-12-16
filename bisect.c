@@ -934,7 +934,7 @@ static enum bisect_error check_good_are_ancestors_of_bad(struct repository *r,
 	if (!res) {
 		/* Create file BISECT_ANCESTORS_OK. */
 		fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0600);
-		if (fd < 0)
+		if (fd == -1)
 			/*
 			 * BISECT_ANCESTORS_OK file is not absolutely necessary,
 			 * the bisection process will continue at the next

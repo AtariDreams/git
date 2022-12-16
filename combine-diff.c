@@ -1072,7 +1072,7 @@ static void show_patch_diff(struct combine_diff_path *elem, int num_parent,
 			fill_filespec(df, null_oid(), 0, st.st_mode);
 			result_size = fill_textconv(opt->repo, textconv, df, &result);
 			free_filespec(df);
-		} else if (0 <= (fd = open(elem->path, O_RDONLY))) {
+		} else if (-1 != (fd = open(elem->path, O_RDONLY))) {
 			size_t len = xsize_t(st.st_size);
 			ssize_t done;
 			int is_file, i;

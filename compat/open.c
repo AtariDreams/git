@@ -19,7 +19,7 @@ int git_open_with_retry(const char *path, int flags, ...)
 
 	do {
 		ret = open(path, flags, mode);
-	} while (ret < 0 && errno == EINTR);
+	} while (ret == -1 && errno == EINTR);
 
 	return ret;
 }

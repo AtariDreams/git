@@ -4097,7 +4097,7 @@ int diff_populate_filespec(struct repository *r,
 			return 0;
 		}
 		fd = open(s->path, O_RDONLY);
-		if (fd < 0)
+		if (fd == -1)
 			goto err_empty;
 		s->data = xmmap(NULL, s->size, PROT_READ, MAP_PRIVATE, fd, 0);
 		close(fd);

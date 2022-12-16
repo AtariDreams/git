@@ -944,15 +944,16 @@ static int stack_compact_range(struct reftable_stack *st, int first, int last,
 
 		sublock_file_fd = open(subtab_lock.buf,
 				       O_EXCL | O_CREAT | O_WRONLY, 0666);
-		if (sublock_file_fd >= 0) {
-			close(sublock_file_fd);
-		} else if (sublock_file_fd < 0) {
+		if (sublock_file_fd == -1) {
 			if (errno == EEXIST) {
 				err = 1;
 			} else {
 				err = REFTABLE_IO_ERROR;
 			}
 		}
+        else {
+            close(sublock_file_fd);
+        }
 
 		subtable_locks[j] = subtab_lock.buf;
 		delete_on_success[j] = subtab_file_name.buf;

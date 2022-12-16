@@ -3237,7 +3237,7 @@ int git_config_set_multivar_in_file_gently(const char *config_filename,
 	 * If .git/config does not exist yet, write a minimal version.
 	 */
 	in_fd = open(config_filename, O_RDONLY);
-	if ( in_fd < 0 ) {
+	if ( in_fd == -1 ) {
 		if ( ENOENT != errno ) {
 			error_errno(_("opening %s"), config_filename);
 			ret = CONFIG_INVALID_FILE; /* same as "invalid config file" */
