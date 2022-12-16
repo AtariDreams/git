@@ -1040,7 +1040,7 @@ static enum interesting do_match(struct index_state *istate,
 		    ps->max_depth == -1)
 			return all_entries_interesting;
 		return within_depth(base->buf + base_offset, baselen,
-				    !!S_ISDIR(entry->mode),
+				    S_ISDIR(entry->mode),
 				    ps->max_depth) ?
 			entry_interesting : entry_not_interesting;
 	}
@@ -1073,7 +1073,7 @@ static enum interesting do_match(struct index_state *istate,
 
 			if (within_depth(base_str + matchlen + 1,
 					 baselen - matchlen - 1,
-					 !!S_ISDIR(entry->mode),
+					 S_ISDIR(entry->mode),
 					 ps->max_depth))
 				goto interesting;
 			else
@@ -1272,12 +1272,10 @@ enum interesting tree_entry_interesting(struct index_state *istate,
 
 	/* #15, #19 */
 	if (S_ISDIR(entry->mode) &&
-	    positive >= entry_interesting &&
 	    negative == entry_interesting)
 		return entry_interesting;
 
-	if ((positive == entry_interesting &&
-	     negative >= entry_interesting) || /* #5, #6, #16 */
+	if (positive == entry_interesting || /* #5, #6, #16 */
 	    (positive == all_entries_interesting &&
 	     negative == entry_interesting)) /* #9 */
 		return entry_not_interesting;
