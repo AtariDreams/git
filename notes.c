@@ -870,9 +870,18 @@ static int string_list_add_note_lines(struct string_list *list,
 
 	/* read_sha1_file NUL-terminates */
 	data = read_object_file(oid, &t, &len);
-	if (t != OBJ_BLOB || !data || !len) {
+	if (!data) {
+		return 1;
+	}
+
+	if (t != OBJ_BLOB) {
 		free(data);
-		return t != OBJ_BLOB || !data;
+		return 1;
+	}
+
+	if (!len) {
+		free(data);
+		return 0;
 	}
 
 	/*
