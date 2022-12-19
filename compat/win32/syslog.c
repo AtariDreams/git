@@ -10,7 +10,7 @@ void openlog(const char *ident, int logopt, int facility)
 	ms_eventlog = RegisterEventSourceA(NULL, ident);
 
 	if (!ms_eventlog)
-		warning("RegisterEventSource() failed: %lu", GetLastError());
+		warning("RegisterEventSource() failed: %lu", ERROR_ACCESS_DENIED);
 }
 
 void syslog(int priority, const char *fmt, ...)
