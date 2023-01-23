@@ -130,14 +130,14 @@ static int is_console(int fd)
 #define BUFFER_SIZE 4096
 #define MAX_PARAMS 16
 
-static void write_console(unsigned char *str, size_t len)
+static void write_console(char *str, size_t len)
 {
 	/* only called from console_thread, so a static buffer will do */
 	static wchar_t wbuf[2 * BUFFER_SIZE + 1];
 	DWORD dummy;
 
 	/* convert utf-8 to utf-16 */
-	int wlen = xutftowcsn(wbuf, (char*) str, ARRAY_SIZE(wbuf), len);
+	int wlen = xutftowcsn(wbuf, str, ARRAY_SIZE(wbuf), len);
 	if (wlen < 0) {
 		wchar_t *err = L"[invalid]";
 		WriteConsoleW(console, err, wcslen(err), &dummy, NULL);
@@ -195,9 +195,9 @@ static void erase_in_line(void)
 		&dummy);
 }
 
-static void set_attr(char func, const int *params, int paramlen)
+static void set_attr(char func, const DWORD *params, DWORD paramlen)
 {
-	int i;
+	DWORD i;
 	switch (func) {
 	case 'm':
 		for (i = 0; i < paramlen; i++) {
@@ -342,10 +342,12 @@ enum {
 
 static DWORD WINAPI console_thread(LPVOID unused)
 {
-	unsigned char buffer[BUFFER_SIZE];
+	char buffer[BUFFER_SIZE];
 	DWORD bytes;
-	int start, end = 0, c, parampos = 0, state = TEXT;
-	int params[MAX_PARAMS];
+	DWORD start, end = 0, c, parampos = 0;
+	char c;
+	DWORD params[MAX_PARAMS];
+	int state = TEXT;
 
 	while (1) {
 		/* read next chunk of bytes from the pipe */
@@ -430,9 +432,12 @@ static DWORD WINAPI console_thread(LPVOID unused)
 				write_console(buffer + start, end - start);
 
 			/* move remaining bytes to the front */
-			if (end < bytes)
-				memmove(buffer, buffer + end, bytes - end);
-			end = bytes - end;
+			if (end < bytes) {
+				memmove(buffer, bytes + end, bytes - end);
+			} else {
+				/* all data has been consumed, mark buffer empty */
+				end = 0;
+			}
 		} else {
 			/* all data has been consumed, mark buffer empty */
 			end = 0;
