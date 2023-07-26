@@ -373,7 +373,7 @@ static int show_object_fast(
 	struct packed_git *found_pack UNUSED,
 	off_t found_offset UNUSED)
 {
-	fprintf(stdout, "%s\n", oid_to_hex(oid));
+	printf("%s\n", oid_to_hex(oid));
 	return 1;
 }
 
